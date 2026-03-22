@@ -1,0 +1,78 @@
+OSI MODEL (Open Systems Interconnection Model)
+A conceptual framework developed by the International Organization for Standardization to standardize how different systems communicate over a network.
+It divides communication into 7 layers, each with specific responsibilities.
+
+1. Physical Layer (Layer 1)
+
+Function: Transmits raw bits over a physical medium.
+Key Responsibilities:
+Electrical/optical signal transmission
+Bit synchronization
+Data rate control
+Physical topology (bus, star, ring)
+Examples: Cables, hubs, repeaters, network interface hardware
+Data Unit: Bits
+
+2. Data Link Layer (Layer 2)
+
+Function: Provides node-to-node data transfer and error detection.
+Key Responsibilities:
+Framing (packaging bits into frames)
+MAC addressing
+Error detection and correction
+Flow control
+Sub-layers:
+LLC (Logical Link Control)
+MAC (Media Access Control)
+Examples: Switches, Ethernet protocols
+Data Unit: Frames
+
+3. Network Layer (Layer 3)
+
+Function: Determines how data is routed between devices across networks.
+Key Responsibilities:
+Logical addressing (IP addresses)
+Path determination (routing)
+Packet forwarding
+Fragmentation and reassembly
+Examples: Routers, IP protocol
+Data Unit: Packets
+
+4. Transport Layer (Layer 4)
+
+Function: Ensures reliable data delivery between end systems.
+Key Responsibilities:
+End-to-end communication
+Error recovery and retransmission
+Flow control
+Segmentation and reassembly
+Protocols: TCP (reliable), UDP (unreliable)
+Data Unit: Segments
+
+5. Session Layer (Layer 5)
+
+Function: Manages sessions (connections) between applications.
+Key Responsibilities:
+Session establishment, maintenance, termination
+Synchronization checkpoints
+Dialog control (full/half duplex)
+Data Unit: Data
+
+6. Presentation Layer (Layer 6)
+
+Function: Translates data formats between application and network.
+Key Responsibilities:
+Data encoding/decoding
+Encryption/decryption
+Compression/decompression
+Examples: SSL/TLS formatting, data conversion (ASCII, JPEG, etc.)
+Data Unit: Data
+
+7. Application Layer (Layer 7)
+
+Function: Provides network services directly to user applications.
+Key Responsibilities:
+Interface for end-user processes
+File transfer, email, web services
+Examples: HTTP, FTP, SMTP, DNS
+Data Unit: Data
