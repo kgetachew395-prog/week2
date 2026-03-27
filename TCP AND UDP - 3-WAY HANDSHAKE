@@ -1,0 +1,72 @@
+# TCP and UDP - 3-Way Handshake
+
+## TCP (Transmission Control Protocol)
+
+### Characteristics
+| Feature | Description |
+|---------|-------------|
+| Reliability | Guaranteed delivery, retransmits lost packets |
+| Ordering | Packets arrive in sequence |
+| Connection-oriented | 3-way handshake before data transfer |
+| Flow Control | Prevents sender from overwhelming receiver |
+| Error Checking | Checksum and acknowledgment |
+| Use Cases | Web browsing, email, file transfer, messaging |
+
+---
+
+### TCP 3-Way Handshake
+
+The three-way handshake establishes a reliable connection before data transfer.
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## TCP vs UDP Comparison
+
+| Aspect | TCP | UDP |
+|--------|-----|-----|
+| Connection | Connection-oriented | Connectionless |
+| Reliability | Reliable (retransmission) | Unreliable (no retransmission) |
+| Ordering | Ordered | Unordered |
+| Flow Control | Yes | No |
+| Error Recovery | Yes | No (only checksum) |
+| Header Size | 20 bytes | 8 bytes |
+| Speed | Slower | Faster |
+| Use Case | Web, email, file transfer | Voice, video, streaming, gaming |
+
+---
+
+## Real-World Examples
+
+### TCP Example: Telegram Text Message
+You send "Hello" as a text message:
+1. TCP handshake establishes connection
+2. Message segmented into packets with sequence numbers
+3. Each packet acknowledged by server
+4. If packet lost, it's retransmitted
+5. All packets reassembled in correct order
+6. You see single checkmark (sent), then double checkmark (delivered)
+
+### UDP Example: Telegram Voice Call
+You say "Hello" during a voice call:
+1. No handshake - data sent immediately
+2. Voice audio broken into datagrams
+3. No acknowledgment of receipt
+4. If datagram lost, it's gone (tiny audio glitch)
+5. Datagrams may arrive out of order (still playable)
+6. Call continues without delay
+
+### Why Voice Calls Use UDP
+- Speed is critical (real-time)
+- Retransmission would cause delay
+- Small glitches are acceptable
+- TCP would cause noticeable lag
