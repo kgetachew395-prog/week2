@@ -1,0 +1,151 @@
+# IP Addressing & Subnetting
+
+## IPv4 Structure
+- 32 bits = 4 octets (each 0-255)
+- Example: 192.168.1.1 = 11000000.10101000.00000001.00000001
+
+---
+
+## Public vs Private IP Ranges
+
+| Type | Range | Use |
+|------|-------|-----|
+| Private | 10.0.0.0 - 10.255.255.255 | Large private networks |
+| Private | 172.16.0.0 - 172.31.255.255 | Medium private networks |
+| Private | 192.168.0.0 - 192.168.255.255 | Small private networks |
+| Public | Everything else | Internet-facing |
+
+---
+
+## CIDR Notation
+
+| CIDR | Network Bits | Host Bits | Total IPs | Usable IPs |
+|------|--------------|-----------|-----------|------------|
+| /8 | 8 | 24 | 16,777,216 | 16,777,214 |
+| /16 | 16 | 16 | 65,536 | 65,534 |
+| /24 | 24 | 8 | 256 | 254 |
+| /30 | 30 | 2 | 4 | 2 |
+
+### CIDR Examples
+- 192.168.1.0/24: Network = 192.168.1.0, Hosts = 192.168.1.1 to 192.168.1.254
+- 10.0.0.0/8: Network = 10.0.0.0, Hosts = 10.0.0.1 to 10.255.255.254
+- 172.16.0.0/16: Network = 172.16.0.0, Hosts = 172.16.0.1 to 172.16.255.254
+
+---
+
+## Classful Addressing (Historical)
+
+| Class | First Octet | Network Bits | Host Bits | Use |
+|-------|-------------|--------------|-----------|-----|
+| A | 1-126 | 8 | 24 | Large networks |
+| B | 128-191 | 16 | 16 | Medium networks |
+| C | 192-223 | 24 | 8 | Small networks |
+| D | 224-239 | N/A | N/A | Multicast |
+| E | 240-255 | N/A | N/A | Experimental |
+
+### Special Addresses
+- 0.0.0.0: Default route
+- 127.0.0.0 - 127.255.255.255: Loopback (localhost is 127.0.0.1)
+- 255.255.255.255: Limited broadcast
+
+---
+
+## Subnetting
+
+### Subnet Mask Binary
+- /24: 255.255.255.0 = 11111111.11111111.11111111.00000000
+- /16: 255.255.0.0 = 11111111.11111111.00000000.00000000
+- /8: 255.0.0.0 = 11111111.00000000.00000000.00000000
+
+### Subnet Calculation Formula
+- Number of subnets = 2^(borrowed bits)
+- Number of hosts = 2^(host bits) - 2
+
+---
+
+## MAC Addresses
+
+### Structure
+- 48 bits = 12 hexadecimal characters
+- Format: AA:BB:CC:DD:EE:FF
+- First 3 octets: OUI (manufacturer identifier)
+- Last 3 octets: NIC-specific (unique to device)
+
+### Known OUIs
+| OUI | Manufacturer |
+|-----|--------------|
+| 00:1A:2B | Dell |
+| AC:BC:32 | Apple |
+| 00:14:22 | Toshiba |
+| 00:50:56 | VMware |
+
+---
+
+## ARP (Address Resolution Protocol)
+
+### Purpose
+Resolves IP addresses to MAC addresses on local network
+
+### ARP Process
+1. Device broadcasts: "Who has IP 192.168.1.1?"
+2. Router replies: "I have 192.168.1.1, my MAC is 11:22:33:44:55:66"
+3. Device stores in ARP cache
+
+### ARP Commands
+
+
+
+
+
+
+
+
+View ARP cache
+arp -a
+
+Add static ARP entry
+arp -s 192.168.1.1 11:22:33:44:55:66
+
+Delete ARP entry
+arp -d 192.168.1.1
+
+text
+
+---
+
+## Network Commands
+
+### IP Configuration
+Show IP addresses
+ip addr show
+ifconfig
+
+Show routing table
+ip route show
+route -n
+
+Show ARP cache
+arp -a
+
+text
+
+### Network Testing
+Test connectivity
+ping 8.8.8.8
+
+Trace route
+traceroute google.com
+
+Show open ports
+netstat -tulpn
+ss -tulpn
+
+text
+
+### DNS Resolution
+DNS lookup
+nslookup google.com
+dig google.com
+
+Show public IP
+curl ifconfig.me
