@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""
+IP Address Classifier Tool
+Identifies network class, subnet mask, private/public status, and usability
+"""
+
+def get_ip_class(first_octet):
+    """Determine IP class based on first octet"""
+    if 1 <= first_octet <= 126:
+        return 'A', '255.0.0.0', 24
+    elif 128 <= first_octet <= 191:
+        return 'B', '255.255.0.0', 16
+    elif 192 <= first_octet <= 223:
+        return 'C', '255.255.255.0', 8
+    elif 224 <= first_octet <= 239:
+        return 'D', 'N/A (Multicast)', 0
+    elif 240 <= first_octet <= 255:
+        return 'E', 'N/A (Experimental)', 0
+    else:
+        return 'Invalid', 'N/A', 0
+
+def is_private(ip_parts):
+    """Check if IP is in private range (RFC 1918)"""
+    first, second = ip_parts[0], ip_parts[1]
+    
+    if first == 10:
+        return True
+    if first == 172 and 16 <= second <= 31:
+        return True
+    if first == 192 and second == 168:
+        return True
+    if first == 127:
+        return True
+    return False
+
+def is_usable(ip_class, ip_parts):
+    """Check if IP is usable as host address"""
+    if ip_class in ['D', 'E', 'Invalid']:
+        return False
+    
+    first, second, third, fourth = ip_parts
+    
+    if ip_class == 'A' and first != 0 and second == 0 and third == 0 and fourth == 0:
+        return False
+    if ip_class == 'B' and second == 0 and third == 0 and fourth == 0:
+        return False
+    if ip_class == 'C' and third == 0 and fourth == 0:
+        return False
+    
+    if ip_class == 'A' and second == 255 and third == 255 and fourth == 255:
+        return False
+    if ip_class == 'B' and third == 255 and fourth == 255:
+        return False
+    if ip_class == 'C' and fourth == 255:
+        return False
+    
+    return True
+
+def calculate_subnet_info(host_bits):
+    """Calculate subnet information based on host bits"""
+    total_hosts = 2 ** host_bits
+    usable_hosts = total_hosts - 2 if host_bits >= 2 else 0
+    return total_hosts, usable_hosts
+
+def main():
+    print("=" * 50)
+    print("IP ADDRESS CLASSIFIER TOOL")
+    print("=" * 50)
+    
+    ip_input = input("\nEnter an IP address: ").strip()
+    
+    try:
+        ip_parts = [int(x) for x in ip_input.split('.')]
+        if len(ip_parts) != 4:
+            raise ValueError
+        for part in ip_parts:
+            if part < 0 or part > 255:
+                raise ValueError
+    except ValueError:
+        print("\n[ERROR] Invalid IP address format. Use format: xxx.xxx.xxx.xxx")
+        return
+    
+    first_octet = ip_parts[0]
+    
+    ip_class, subnet_mask, host_bits = get_ip_class(first_octet)
+    private_status = is_private(ip_parts)
+    usable_status = is_usable(ip_class, ip_parts)
+    total_hosts, usable_hosts = calculate_subnet_info(host_bits)
+    
+    print("\n" + "=" * 50)
+    print("IP CLASSIFICATION RESULTS")
+    print("=" * 50)
+    print(f"\nIP Address: {ip_input}")
+    print(f"First Octet: {first_octet}")
+    print(f"IP Class: Class {ip_class}")
+    
+    if ip_class in ['A', 'B', 'C']:
+        print(f"Default Subnet Mask: {subnet_mask}")
+        print(f"Network Bits: {32 - host_bits}")
+        print(f"Host Bits: {host_bits}")
+        print(f"Total IPs in Network: {total_hosts:,}")
+        print(f"Usable Hosts per Network: {usable_hosts:,}")
+    
+    print(f"\nAddress Type: {'PRIVATE' if private_status else 'PUBLIC'}")
+    
+    if ip_parts[0] == 127:
+        print("Note: Loopback address (localhost)")
+    elif ip_class == 'D':
+        print("Note: Multicast address - not assignable to hosts")
+    elif ip_class == 'E':
+        print("Note: Experimental address - reserved")
+    
+    print(f"\nUsable as Host Address: {'YES' if usable_status else 'NO'}")
+    
+    if not usable_status and ip_class in ['A', 'B', 'C']:
+        print("Reason: This is either a network address or broadcast address")
+    
+    print("\n" + "=" * 50)
+
+if __name__ == "__main__":
+    main()
