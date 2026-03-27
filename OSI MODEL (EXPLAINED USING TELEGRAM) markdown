@@ -1,0 +1,92 @@
+# OSI Model Explained Using Telegram
+
+## The 7 Layers
+
+| Layer | Name | Function | Telegram Example |
+|-------|------|----------|------------------|
+| 7 | Application | User interaction, network services | Telegram app creates message "Hello" |
+| 6 | Presentation | Data format, encryption, compression | TLS encryption, MTProto protocol |
+| 5 | Session | Manages sessions between apps | Session token keeps you logged in |
+| 4 | Transport | Reliable/unreliable delivery, error recovery | TCP segments message, port 443 |
+| 3 | Network | Routing, logical addressing (IP) | IP packet: src 192.168.1.10 → dst 149.154.167.99 |
+| 2 | Data Link | Physical addressing (MAC), error detection | Ethernet frame: src MAC phone → dst MAC router |
+| 1 | Physical | Bits over medium | Wi-Fi radio waves at 2.4GHz/5GHz |
+
+---
+
+## Detailed Layer Explanation
+
+### Layer 7 - Application
+- Telegram app is running on your phone
+- You type "Hello" and press send
+- App creates message object with text, sender ID, recipient ID, timestamp
+- Uses MTProto (Telegram's custom protocol)
+
+### Layer 6 - Presentation
+- Message is encrypted (TLS for cloud chats, end-to-end for secret chats)
+- Data is compressed for faster transmission
+- Character encoding is set (UTF-8)
+
+### Layer 5 - Session
+- Session token is attached to prove you're authenticated
+- Connection state is maintained
+- If you switch from Wi-Fi to cellular, session continues
+
+### Layer 4 - Transport
+- TCP segments the data (breaks into packets)
+- Source port: random high port (e.g., 54321)
+- Destination port: 443 (HTTPS)
+- Sequence numbers added for ordering
+- Checksum added for error detection
+
+### Layer 3 - Network
+- IP packet created with:
+  - Source IP: your phone's private IP (192.168.1.10)
+  - Destination IP: Telegram server (149.154.167.99)
+  - TTL: 64 (time to live)
+- Routing table checked: destination not local → send to default gateway
+
+### Layer 2 - Data Link
+- Frame created with:
+  - Source MAC: your phone's MAC (AA:BB:CC:DD:EE:FF)
+  - Destination MAC: router's MAC (11:22:33:44:55:66)
+  - CRC added for error checking
+- Wi-Fi uses CSMA/CA to avoid collisions
+
+### Layer 1 - Physical
+- Bits converted to radio waves
+- Transmitted at 2.4GHz or 5GHz frequency
+- Router antenna receives and demodulates
+
+---
+
+## Complete Journey of "Hello" in Telegram
+
+1. You type and send → Layer 7 (Application)
+2. Message encrypted → Layer 6 (Presentation)
+3. Session token attached → Layer 5 (Session)
+4. TCP segmentation, port 443 → Layer 4 (Transport)
+5. IP packet with source/destination IPs → Layer 3 (Network)
+6. Frame with source/destination MACs → Layer 2 (Data Link)
+7. Radio waves transmitted → Layer 1 (Physical)
+8. Coffee shop router receives → Layer 1
+9. Router processes Layer 2 (checks MAC, CRC)
+10. Router examines Layer 3 (IP destination)
+11. Router performs NAT (changes source IP to public IP)
+12. Packet travels across internet through multiple routers
+13. Telegram server receives packet
+14. Process reverses (decapsulation) up the layers
+15. Message delivered to your friend
+16. Acknowledgment returns same path
+
+---
+
+## Mnemonic (Top to Bottom)
+**A**ll **P**eople **S**eem **T**o **N**eed **D**ata **P**rocessing
+- Application
+- Presentation
+- Session
+- Transport
+- Network
+- Data Link
+- Physical
